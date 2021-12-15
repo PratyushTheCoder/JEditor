@@ -1,10 +1,27 @@
-from subprocess import *
 from tkinter import *
 from tkinter.filedialog import *
 from tkinter.messagebox import *
 
+from subprocess import *
+
+import os
+import json
+
+print("This is JEditor Termial")
 class JEditor():
+            
     def __init__(self,app):
+        if os.path.exists(os.getcwd()+"/settings.json"):
+            with open("./settings.json") as file:
+                configData=json.load(file)
+        else:
+            configTemplate = {
+            "font":"cascadia code",
+            "defaultfontsize":16
+            }        
+            with open(os.getcwd()+"/settings.json","w+") as file:
+                json.dump(configTemplate,file)
+                print("Settings file created please run the app again")
         self.app=app
         self.app.title("JEditor")
         self.app.geometry("{0}x{1}+0+0".format(app.winfo_screenwidth(),app.winfo_screenheight()))
@@ -14,7 +31,8 @@ class JEditor():
         self.mainFrame.pack(expand=True,fill=BOTH)
         #All Variables
         self.path_name=''
-        self.default_font_size=16
+        self.font=configData["font"]
+        self.default_font_size=configData["defaultfontsize"]
         self.java_template = '''public class main{
    public static void main(String[] args) {
    	System.out.println("Hello World");
@@ -72,7 +90,7 @@ class JEditor():
 
         scrollY=Scrollbar(editFrame,orient=VERTICAL)
         scrollY.pack(side=RIGHT,fill=Y)
-        self.textFeild=Text(editFrame,background='black',foreground='white',font=('cascadia code',16,'bold'),insertbackground='white',yscrollcommand=scrollY)
+        self.textFeild=Text(editFrame,background='black',foreground='white',font=(self.font,self.default_font_size,'bold'),insertbackground='white',yscrollcommand=scrollY)
         scrollY.config(command=self.textFeild.yview)
         self.textFeild.pack(expand=True,fill=BOTH)
 
@@ -82,7 +100,7 @@ class JEditor():
 
         scrollY=Scrollbar(outputFrame,orient=VERTICAL)
         scrollY.pack(side=RIGHT,fill=Y)
-        self.outputFeild=Text(outputFrame,background='black',foreground='white',font=('cascadia code',16,'bold'),insertbackground='white',yscrollcommand=scrollY)
+        self.outputFeild=Text(outputFrame,background='black',foreground='white',font=(self.font,self.default_font_size,'bold'),insertbackground='white',yscrollcommand=scrollY)
         scrollY.config(command=self.outputFeild.yview)
         self.outputFeild.pack(expand=True,fill=BOTH)
         # All Shorcuts Keys
@@ -186,4 +204,3 @@ class JEditor():
 app=Tk()        
 contructor=JEditor(app)
 app.mainloop()
-print("This is input window")
