@@ -7,7 +7,7 @@ from subprocess import *
 import os
 import json
 
-print("This is JEditor Termial")
+print("This is JEditor Termial, This is used to take input")
 class JEditor():
             
     def __init__(self,app):
