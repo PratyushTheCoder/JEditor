@@ -17,7 +17,8 @@ class JEditor():
         else:
             configTemplate = {
             "font":"cascadia code",
-            "defaultfontsize":16
+            "defaultfontsize":16,
+            "author":"Pratyush Jha"
             }        
             with open(os.getcwd()+"/settings.json","w+") as file:
                 json.dump(configTemplate,file)
@@ -32,6 +33,7 @@ class JEditor():
         #All Variables
         self.path_name=''
         self.font=configData["font"]
+        self.author=configData["author"]
         self.default_font_size=configData["defaultfontsize"]
         self.java_template = '''public class main{
    public static void main(String[] args) {
@@ -155,6 +157,7 @@ class JEditor():
             data=file.read()
             self.textFeild.delete('1.0',END)
             self.textFeild.insert('1.0',data)
+            self.app.title(f"{self.path_name} - JEditor, Author - {self.author}")
             file.close()
         print(self.path_name)    
     def new_file(self,event=None):
